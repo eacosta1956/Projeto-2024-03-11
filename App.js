@@ -11,10 +11,8 @@ Usamos useRef para criar a referência baseInputRef, que será usada para manipu
   const [base, setBase] = useState('');
   const [altura, setAltura] = useState('');
   const [area, setArea] = useState('');
-
-
-
-  const baseInputRef = useRef(); // Referência para o Textinput da base
+  const [mensagemErro, setMensagemErro] = useState('');
+  const baseInputRef = useRef(); 
 
   /*
   A função CalcularArea é responsável por calcular a área do triângulo e manipular os estados das variáveis. Se os valores de base e altura forem maiores que zero, calculamos a área, atualizamos o estado de área, e então limpamos e focamos o campo de entrada "Base". Caso contrário, apenas limpamos o estado de área. E verificamos se ambos os campos estão preenchidos. Caso contrário, enviamos um alerta.
@@ -22,20 +20,16 @@ Usamos useRef para criar a referência baseInputRef, que será usada para manipu
   function CalcularArea() {
     if (base > 0 && altura > 0) {
       const areaCalculada = (parseFloat(base)*parseFloat(altura)) / 2;
-      setArea(areaCalculada.toString());
+      setArea(areaCalculada.toFixed(2).toString());
       setAltura('');
       setBase('');
       baseInputRef.current.clear();
       baseInputRef.current.focus();
-
+      setMensagemErro('')
     } else {
-      if(base == '' || altura == ""){
-        alert("Insira todos os dados!");
-      }else{
-        setArea('');
+      setMensagemErro("Insira todos os dados!");
       }
     }
-  }
 
  /* 
  Usamos componentes Text para exibir mensagens, TextInput para entrada de dados, e um botão para calcular a área. A referência baseInputRef é atribuida ao campo de entrada "Base". Também exibimos o resultado da área calculada ou uma string vazia, dependendo do estado de área. 
@@ -46,23 +40,19 @@ Usamos useRef para criar a referência baseInputRef, que será usada para manipu
       
       <TextInput
         placeholder="Base"
-
-        style={{ height: 40, textAlign: 'center' }}
-
+        style={styles.input}
         keyboardType={'numeric'}
         value={base}
         onChangeText={(base) => setBase(base)}
-        ref={baseInputRef} // Atribui a referencia aqui
-      />
+        ref={baseInputRef} />
       
       <TextInput
         placeholder="Altura"
-        style={{ height: 40, textAlign: 'center' }}
+        style={styles.input}
         keyboardType={'numeric'}
         value={altura}
-        onChangeText={(altura) => setAltura(altura)}
-      />
-            
+        onChangeText={(altura) => setAltura(altura)} />
+      {mensagemErro ? <Text style={stylesTextoErro}>{mensagemErro}</Text> : null}      
       <Button title=" Calcular Área" onPress={CalcularArea} />
       <Text>{area ? `Resultado: ${area}`: ''} </Text>
       <StatusBar style="auto" />
@@ -70,12 +60,19 @@ Usamos useRef para criar a referência baseInputRef, que será usada para manipu
   );
 }
 
- //definindo o estilo do conteiner principal usando StyleSheet.create.
- const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContente: 'center',
-  },
- });
+const styles = StyleSheet.create({
+      container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContente: 'center',
+      },
+      input: {
+        height: 40,
+        textAlign: 'center',
+      },
+      TextoErro: {
+        color: 'red',
+        marginTop: 10,
+      }
+});

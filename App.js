@@ -36,7 +36,7 @@ Usamos useRef para criar a referência baseInputRef, que será usada para manipu
  */
   return (
     <View style={styles.container}>
-      <Text>Insira os dados abaixo para o cálculo da área do triângulo.</Text>
+      <Text style={styles.header}>Insira os dados abaixo para o cálculo da área do triângulo.</Text>
       
       <TextInput
         placeholder="Base"
@@ -52,9 +52,13 @@ Usamos useRef para criar a referência baseInputRef, que será usada para manipu
         keyboardType={'numeric'}
         value={altura}
         onChangeText={(altura) => setAltura(altura)} />
-      {mensagemErro ? <Text style={stylesTextoErro}>{mensagemErro}</Text> : null}      
+
+      {mensagemErro ? <Text style={styles.TextoErro}>{mensagemErro}</Text> : null}  
+          
       <Button title=" Calcular Área" onPress={CalcularArea} />
+
       <Text>{area ? `Resultado: ${area}`: ''} </Text>
+
       <StatusBar style="auto" />
     </View>
   );
@@ -65,7 +69,12 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
+        // Adicionando padding superior para evitar que o conteúdo fique sob a StatusBar
+        paddingTop: 30,
         justifyContente: 'center',
+      },
+      header: {
+        marginBottom: 10, // Adicionando margem inferior para separar do TextInput
       },
       input: {
         height: 40,
